@@ -45,7 +45,7 @@ static const Layout layouts[] = {
 };
 
 /* key definitions */
-#define MODKEY Mod1Mask
+#define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -58,6 +58,14 @@ static const Layout layouts[] = {
 /* commands */
 static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
+static const char *volupcmd[] = { "/usr/bin/pactl", "set-sink-volume", "@DEFAULT_SINK@", "+5%", NULL };
+static const char *voldowncmd[] = { "/usr/bin/pactl", "set-sink-volume", "@DEFAULT_SINK@", "-5%", NULL };
+static const char *voltogglecmd[] = { "/usr/bin/pactl", "set-sink-mute", "@DEFAULT_SINK@", "toggle", NULL };
+static const char *volunmutecmd[] = { "/usr/bin/pactl", "set-sink-mute", "@DEFAULT_SINK@", "false", NULL };
+static const char *plstopcmd[] = { "/usr/bin/playerctl", "stop", NULL };
+static const char *plprevcmd[] = { "/usr/bin/playerctl", "previous", NULL };
+static const char *plplaycmd[] = { "/usr/bin/playerctl", "play-pause", NULL };
+static const char *plnextcmd[] = { "/usr/bin/playerctl", "next", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -66,10 +74,10 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_d,      incnmaster,     {.i = +1 } },
 	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_h,      setmfact,       {.f = +0.05} },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
 	{ MODKEY,                       XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
@@ -94,6 +102,15 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ 0,				XF86XK_AudioRaiseVolume, spawn,          {.v = volunmutecmd } },
+	{ 0,				XF86XK_AudioLowerVolume, spawn,          {.v = volunmutecmd } },
+	{ 0,				XF86XK_AudioRaiseVolume, spawn,          {.v = volupcmd } },
+	{ 0,				XF86XK_AudioLowerVolume, spawn,          {.v = voldowncmd } },
+	{ 0,				XF86XK_AudioMute,        spawn,          {.v = voltogglecmd } },
+	{ 0,				XF86XK_AudioStop,        spawn,          {.v = plstopcmd } },
+	{ 0,				XF86XK_AudioPrev,        spawn,          {.v = plprevcmd } },
+	{ 0,				XF86XK_AudioPlay,        spawn,          {.v = plplaycmd } },
+	{ 0,				XF86XK_AudioNext,        spawn,          {.v = plnextcmd } },
 };
 
 /* button definitions */
@@ -103,7 +120,6 @@ static const Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
