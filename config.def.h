@@ -22,9 +22,9 @@ static char selbgcolor[]      = "#005577";
 static const unsigned int baralpha = 0;
 static const unsigned int borderalpha = 255;
 static char *colors[][3] = {
-	/*               fg           bg           border   */
-	[SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
-	[SchemeSel]  = { selfgcolor,  selbgcolor,  selbordercolor  },
+	/*               fg         bg         border         */
+	[SchemeNorm] = { "#ffffff", "#000000", normbordercolor },
+	[SchemeSel]  = { "#ffffff", "#000000", selbordercolor  },
 };
 static const unsigned int alphas[][3]      = {
 	/*               fg   bg        border     */
