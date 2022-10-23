@@ -8,3 +8,4 @@ dwm-xrdb-6.2.diff
 alwaysontop-6.2.diff
 dwm-alwayscenter-20200625-f04cac6.diff
 dwm-swallow-6.3.diff
+dwm-focusonnetactive-6.2.diff
